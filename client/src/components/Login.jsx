@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import styles from '../styles/styles'
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
+import { Link } from 'react-router-dom'
 
 const Login = () => {
     const [email, setEmail] = useState("")
@@ -89,6 +90,10 @@ const Login = () => {
                             type='submit' 
                             className='group relative w-full h-[40px] flex rounded-md justify-center py-2 border border-transparent text-sm font-medium text-white bg-blue-600 hover:bg-blue-700'
                         >Submit </button>
+                    </div>
+                    <div className={`${styles.normalFlex} w-full`}>
+                        <h4>Not have an account?</h4>
+                        <Link to='/sign-up' className='text-blue-600 pl-2'>Sign up</Link>
                     </div>
                 </form>
             </div>
