@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import styles from '../styles/styles'
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
 
 const Login = () => {
@@ -63,6 +64,31 @@ const Login = () => {
                                 )
                             }
                         </div>
+                    </div>
+                    <div className={`${styles.normalFlex} justify-between`}>
+                        <div className={`${styles.normalFlex}`}>
+                            <input 
+                                type="checkbox" 
+                                name='remember-me' 
+                                id='remember-me' 
+                                className='h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded' 
+                            />
+                            <label 
+                                htmlFor="remember-me" 
+                                className="ml-2 block text-sm text-gray-900"
+                            >Remember me</label>
+                        </div>
+                        <div className="text-sm">
+                            <a 
+                            href=".forgot-password" className="font-medium text-blue-600 hover:text-blue-500">Forgot password?
+                            </a>
+                        </div>
+                    </div>
+                    <div>
+                        <button 
+                            type='submit' 
+                            className='group relative w-full h-[40px] flex rounded-md justify-center py-2 border border-transparent text-sm font-medium text-white bg-blue-600 hover:bg-blue-700'
+                        >Submit </button>
                     </div>
                 </form>
             </div>
