@@ -8,20 +8,20 @@ if(process.env.NODE_ENV !== 'PRODUCTION'){
     })
 }
 
-// HANDLING UNCAUGHT EXCCEPTION
-process.on('uncaughtException', (err) => {
-    console.log(`Error: ${err.message}`);
-    console.log('shutting down the server for handling uncaught exception');
-})
-
-// UNHANDLED PROMISE REJECTION
+// UNHANDLED PROMISE REJECTION - handles any promise that produces an error 
 process.on('unhandledRejection', (err) => {
-    console.log(`shutting down the server for${err.message}`);
+    console.log(`shutting down the server because ${err.message}`);
     console.log(`shutting down the server for unhandled promise rejection`);
 
     server.close(() => {
         process.exit(1)
     })
+})
+
+// HANDLING UNCAUGHT EXCCEPTION - handles any error that occurs on the server
+process.on('uncaughtException', (err) => {
+    console.log(`Error: ${err.message}`);
+    console.log('shutting down the server for handling uncaught exception');
 })
 
 // CONNECTING TO DATABASE 
