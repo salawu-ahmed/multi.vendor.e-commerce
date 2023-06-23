@@ -45,7 +45,7 @@ const userSchema = new Schema({
   ],
   role: {
     type: String,
-    default: user,
+    default: "user",
   },
   avatar: {
     type: String,
@@ -80,4 +80,4 @@ userSchema.methods.comparePassword = async function (passwordEntered) {
 }
 
 const userModel = mongoose.model("User", userSchema);
-model.exports = userModel;
+module.exports = userModel;

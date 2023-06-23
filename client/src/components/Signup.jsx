@@ -3,6 +3,8 @@ import styles from '../styles/styles'
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
 import { RxAvatar } from 'react-icons/rx'
 import { Link } from 'react-router-dom'
+import { server } from "../server"
+import axios from 'axios'
 
 const Signup = () => {
     const [name, setName] = useState("")
@@ -11,15 +13,31 @@ const Signup = () => {
     const [avatar, setAvatar] = useState("")
     const [visible, setVisible] = useState(false)
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-    }
-
     const handleFileInputChange = (e) => {
         const file = e.target.files[0]
         setAvatar(file)
     }
+    
+    const handleSubmit = (e) => {
+        e.preventDefault()
 
+        const config = {
+            headers: {
+                "Content-Type": "multi-part/form-data"
+            }
+        }
+        // CREATING FORM DATA - WE USE FORMDATA BECAUSE WE USE MULTER IN THE BACKEND 
+        const newForm = new FormData()
+        newForm.append("name", name)
+        newForm.append("email", email)
+        newForm.append("password", password)
+        newForm.append("file", avatar)
+
+        axios
+            .post(`${server}/users/create-users`, newForm, config)
+            .then((res) => console.log(res))
+            .catch(err => console.log(err))
+    }
   return (
     <div className='min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8'>
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -29,7 +47,7 @@ const Signup = () => {
         </div>
         <div className="mt-9 sm:mx-auto sm:w-full sm:max-w-md">
             <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-                <form action="" className="space-y-6"> 
+                <form className="space-y-6" onSubmit={handleSubmit}> 
                     <div>
                         <label htmlFor="email" className="text-gray-700 block text-sm font-medium">
                             Full Name   
@@ -120,7 +138,7 @@ const Signup = () => {
                                     type="file" 
                                     name='avatar' 
                                     id='file-input' 
-                                    accept='.jpg,.jpeg'
+                                    accept='*'
                                     onChange={handleFileInputChange}
                                     className='sr-only'
                                 />
