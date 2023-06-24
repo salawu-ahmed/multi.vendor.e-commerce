@@ -60,11 +60,12 @@ const userSchema = new Schema({
 });
 
 // HASHING PASSWORD 
-userSchema.pre('save',  function (next){
+userSchema.pre('save',  function(next){
     if(!this.password){
         next()
     }
     this.password =  bcrypt.hash(this.password, 10)
+    next()
 })
 
 // CREATING A JWT TOKEN 
@@ -79,5 +80,5 @@ userSchema.methods.comparePassword = async function (passwordEntered) {
     return await bcrypt.compare(passwordEntered, this.password)
 }
 
-const userModel = mongoose.model("Users", userSchema);
+const userModel = mongoose.model('user', userSchema);
 module.exports = userModel;

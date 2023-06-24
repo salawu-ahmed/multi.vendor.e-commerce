@@ -12,7 +12,7 @@ router.post('/create-users', upload.single('file'), async (req, res, next) => {
 
     const userEmail = await User.findOne({email})
     if(userEmail){
-        return next( (new ErrorHandler('User already exists', 400)))
+        return next( new ErrorHandler('User already exists', 400))
     }
 
     const user = {
@@ -21,11 +21,13 @@ router.post('/create-users', upload.single('file'), async (req, res, next) => {
         password: password,
         avatar: fileUrl
     } 
+
     const newUser = await User.create(user)
     res.status(201).json({
         success: true,
         newUser
     })
+    
 })
 
 module.exports = router
