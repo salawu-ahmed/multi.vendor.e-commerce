@@ -7,6 +7,7 @@ const fs = require('fs')
 const jwt = require('jsonwebtoken')
 const ErrorHandler = require('../utils/ErrorHandler');
 const sendMail = require('../utils/sendMail');
+const catchAsyncErrors = require('../utils/catchAsyncErrors')
 
 router.post('/create-users', upload.single('file'), async (req, res, next) => {
     try{
@@ -37,7 +38,7 @@ router.post('/create-users', upload.single('file'), async (req, res, next) => {
         } 
     
         const activationToken = createActivationToken(user)
-        const activationUrl = `http://localhost:3000/activation/${activationToken}`
+        const activationUrl = `http://localhost:3000/activation/:${activationToken}`
         try{
             await sendMail({
                 email: user.email,
@@ -52,6 +53,30 @@ router.post('/create-users', upload.single('file'), async (req, res, next) => {
         console.log(err);
     }
 })
+
+router.post('/activation', catchAsyncErrors(async (req, res, next) => {
+    try {
+        const { activationToken } = req.body
+        const user = jwt.verify(activationToken, process.env.JWT_ACTIVATION_SECRET)
+
+        if(!activationToken) {
+            return next(new ErrorHandler("Invalid token", 400))
+        }
+
+        const { name, email, password, avatar } = user
+        const userDetails = {
+            name: name,
+            email: email,
+            password: password,
+            avatar: avatar
+        }
+        const newUser = await User.create(userDetails)
+        sendToken(newUser, 201, res)
+    } catch (error) {
+        
+    }
+
+}))
 
 // CREATE ACTIVATION TOKEN 
 const createActivationToken = (user) => {
