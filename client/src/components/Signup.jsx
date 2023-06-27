@@ -2,7 +2,7 @@ import { useState } from 'react'
 import styles from '../styles/styles'
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
 import { RxAvatar } from 'react-icons/rx'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { server } from "../server"
 import axios from 'axios'
 
@@ -12,6 +12,7 @@ const Signup = () => {
     const [password, setPassword] = useState("")
     const [avatar, setAvatar] = useState("")
     const [visible, setVisible] = useState(false)
+    const navigate = useNavigate()
 
     const handleFileInputChange = (e) => {
         const file = e.target.files[0]
@@ -37,6 +38,7 @@ const Signup = () => {
             .post(`${server}/users/create-users`, newForm, config)
             .then((res) => console.log(res))
             .catch(err => console.log(err))
+        navigate('/')
     }
   return (
     <div className='min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8'>
